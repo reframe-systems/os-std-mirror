@@ -6,6 +6,7 @@ FeatureScript ; /* Automatically generated version */
 /**
  * Properties include name, appearance, material, and part number (see [PropertyType]).  They can be set in FeatureScript, but not read.
  */
+import(path : "onshape/std/containers.fs", version : "");
 import(path : "onshape/std/context.fs", version : "");
 import(path : "onshape/std/query.fs", version : "");
 import(path : "onshape/std/string.fs", version : "");
@@ -29,13 +30,19 @@ export import(path : "onshape/std/propertytype.gen.fs", version : "");
  *      @field customPropertyId {string} : @requiredif {`propertyType` is `CUSTOM`}
  *          The id of the custom property.  The property id is available from your
  *          [company's custom properties page](https://cad.onshape.com/help/index.htm#cshid=company_properties).
- *          Note that this call performs no checks as to whether the custom property value is valid, so
- *          invalid property values may be recorded.
+ *          Note that, apart from the properties whose value is a list of ids described below, this call
+ *          performs no checks as to whether the custom property value is valid, so invalid property values
+ *          may be recorded.
  *      @field value : A [Color] if the `propertyType` is `APPEARANCE`, a [Material] if it is `MATERIAL`,
  *          a boolean if it is `EXCLUDE_FROM_BOM`, a value with mass units if it is `MASS_OVERRIDE`,
  *          and a string otherwise.  The value should be a string for a `CUSTOM` property even if the property
  *          is of a non-string type.
  *          @eg `color(1, 0, 0)` to make the part red.
+ *
+ *          The value of a `CUSTOM` property whose type is a category or a user, which includes the built-in
+ *          Category, Approver, and Last changed by properties, must be a list of ids in JSON form, for
+ *          example `"[\\"58a3dbefc221e70f567badef\\"]"`.  Setting one of those properties to anything else,
+ *          such as a category name or a bare id, throws.  An empty string clears the property.
  * }}
  */
 export function setProperty(context is Context, definition is map)
@@ -116,6 +123,26 @@ precondition
         else if (definition.propertyType == PropertyType.MATERIAL)
         {
             result.density *= kilogram / meter ^ 3;
+            if (result.youngsModulus != undefined)
+            {
+                result.youngsModulus *= pascal;
+            }
+            if (result.tensileYieldStrength != undefined)
+            {
+                result.tensileYieldStrength *= pascal;
+            }
+            if (result.ultimateTensileStrength != undefined)
+            {
+                result.ultimateTensileStrength *= pascal;
+            }
+            if (result.compressiveYieldStrength != undefined)
+            {
+                result.compressiveYieldStrength *= pascal;
+            }
+            if (result.ultimateCompressiveStrength != undefined)
+            {
+                result.ultimateCompressiveStrength *= pascal;
+            }
             result = result as Material;
         }
         else if (definition.propertyType == PropertyType.MASS_OVERRIDE)
@@ -162,13 +189,34 @@ export function color(red is number, green is number, blue is number) returns Co
 /** Represents a material. */
 export type Material typecheck canBeMaterial;
 
-/** Typecheck for [Material] */
+const pressureMaterialProperties = [ "youngsModulus",
+    "tensileYieldStrength", "ultimateTensileStrength",
+    "compressiveYieldStrength", "ultimateCompressiveStrength"];
+
+const allMaterialProperties = concatenateArrays([ "name", "density", "poissonsRatio" ], pressureMaterialProperties);
+
+/** Typecheck for [Material]. Any map that includes a `name` field and a `density` field can be a material. */
 export predicate canBeMaterial(value)
 {
     value is map;
     value.name is string;
+
     value.density is ValueWithUnits;
     value.density.unit == DENSITY_UNITS;
+
+    for (var key in keys(value))
+    {
+        isIn(key, allMaterialProperties);
+        if (key == "poissonsRatio")
+        {
+            value[key] is number;
+        }
+        else if (isIn(key, pressureMaterialProperties))
+        {
+            value[key] is ValueWithUnits;
+            value[key].unit == PRESSURE_UNITS;
+        }
+    }
 }
 
 /**

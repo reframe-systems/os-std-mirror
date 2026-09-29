@@ -195,6 +195,21 @@ export function callSubfeatureAndProcessStatus(topLevelId is Id, fn is function,
 }
 
 /**
+ * Calls a subfeature with error propagation and an identity parameter mapping so that
+ * faulty parameter IDs from the subfeature are reported as-is on the top-level feature.
+ *
+ * @param topLevelId   : @autocomplete `id`
+ * @param fn           : @autocomplete `sheetMetalStart`
+ * @param subfeatureId : @autocomplete `id + "sheetMetalStart"`
+ * @param definition   : @autocomplete `definition`
+ */
+export function callSubfeatureAndProcessStatusSameParameters(topLevelId is Id, fn is function, context is Context, subfeatureId is Id, definition is map)
+{
+    return callSubfeatureAndProcessStatus(topLevelId, fn, context, subfeatureId, definition,
+        { "propagateErrorDisplay" : true, "featureParameterMappingFunction" : function(param) { return param; } });
+}
+
+/**
  * See [callSubfeatureAndProcessStatus](callSubfeatureAndProcessStatus(Id, function, Context, Id, map)).
  *
  * @param topLevelId   : @autocomplete `id`
@@ -393,6 +408,8 @@ predicate isArrayParameter(value)
  * Associates a FeatureScript value with a given string. This value can then be referenced in a feature name using
  * the string. The provided value can be used in a feature name by including e.g. "#myValue" in the Feature
  * Name Template.
+ * This can also be used to override the value of a READ_ONLY parameter as used by the feature dialog.
+ * This currently works only for Quantity, Boolean, and String parameters.
  * @param definition {{
  *      @field name {string} : @eg `myValue`
  *      @field value
@@ -638,15 +655,23 @@ export function makeRobustQuery(context is Context, subquery is Query) returns Q
 }
 
 /**
-* Generates array of robust queries for each entity of the subquery
+* Generates array of robust queries for each entity of the subquery with strict identity preservation.
 */
 export function makeRobustQueriesBatched(context is Context, subquery is Query) returns array
+{
+    return makeRobustQueriesBatched(context, subquery, false);
+}
+
+/**
+* Generates array of robust queries for each entity of the subquery, optionally following through splits and merges.
+*/
+export function makeRobustQueriesBatched(context is Context, subquery is Query, followSplitMerge is boolean) returns array
 {
     var out = [];
     const lastOperationId = lastOperationId(context);
     for (var ent in evaluateQuery(context, subquery))
     {
-        out = append(out, qUnion([ent, startTrackingIdentityFromOp([ent], lastOperationId)]));
+        out = append(out, qUnion([ent, startTrackingIdentityFromOp([ent], lastOperationId, followSplitMerge)]));
     }
     return out;
 }
@@ -657,10 +682,20 @@ export function makeRobustQueriesBatched(context is Context, subquery is Query) 
 */
 function startTrackingIdentityFromOp(subqueries is array, operationId is Id) returns Query
 {
+    return startTrackingIdentityFromOp(subqueries, operationId, false);
+}
+
+/**
+* @internal
+* Used in `makeRobustQueriesBatched`
+*/
+function startTrackingIdentityFromOp(subqueries is array, operationId is Id, followSplitMerge is boolean) returns Query
+{
     return {
         "subquery1" : subqueries,
         "lastOperationId" : operationId,
         "identityPreservingOnly" : true,
+        "followSplitMerge" : followSplitMerge,
         "queryType" : QueryType.TRACKING
         } as Query;
 }

@@ -1629,7 +1629,7 @@ export enum ErrorStringEnum
     PATTERN_SWITCH_TO_PER_INSTANCE,
     /* Selected features do not create any geometry that may be patterned. */
     PATTERN_NO_GEOM_FROM_FEATURES,
-    /* You do not have LINK permission to one or more revisions. */
+    /* You do not have Link permission to one or more revisions. */
     RM_NO_LINK_PERMISSION_TO_REVISION,
     /* Select parting edges. */
     DRAFT_SELECT_PARTING_EDGES,
@@ -2342,7 +2342,7 @@ export enum ErrorStringEnum
     FGS_SIMULATION_ERROR_INTERNAL_ERROR,
     /* Text is not supported. */
     DXF_COULD_NOT_CONVERT_TEXT,
-    /* Simulation cannot be completed. Try reducing the number of instances. */
+    /* Simulation cannot be completed due to assembly complexity. */
     FGS_SIMULATION_ASSEMBLY_TOO_COMPLEX,
     /* Select edge projection direction for split. */
     SPLIT_SELECT_FACE_DIRECTION,
@@ -2788,7 +2788,7 @@ export enum ErrorStringEnum
     DECAL_NO_FACE_SELECTION,
     /* Select image for decal */
     DECAL_NO_IMAGE_SELECTION,
-    /* Inserted image exceeds 4k x 4k size limit */
+    /* Inserted image exceeds 4K x 4K size limit */
     DECAL_IMAGE_TOO_LARGE,
     /* At least one part instance is required for simulation. */
     FGS_SIMULATION_ASSEMBLY_HAS_NO_INSTANCES,
@@ -3577,6 +3577,51 @@ export enum ErrorStringEnum
     /* Cancel failed. Simulation is already complete. */
     ASYNC_SIMULATION_ALREADY_COMPLETE,
     /* Select an entity for the mate connector attachment. */
-    MATECONNECTOR_ATTACH_TO_NOT_RESOLVED
+    MATECONNECTOR_ATTACH_TO_NOT_RESOLVED,
+    /* Select one or more parts. */
+    SIMULATION_RIGID_INSTANCE_NOT_SPECIFIED,
+    /* The selected rigid feature is suppressed. */
+    SIMULATION_RIGID_INSTANCE_SUPPRESSED,
+    /* For nominal jog offset option, the jog offset has to be greater than zero. */
+    SHEET_METAL_JOG_BLIND_NOMINAL,
+    /* For outside jog offset option, the jog offset has to be greater than the sheet metal model thickness. */
+    SHEET_METAL_JOG_BLIND_OUTSIDE,
+    /* For nominal jog offset option, the thickness factor has to be greater than zero. */
+    SHEET_METAL_JOG_THICKNESS_NOMINAL,
+    /* For outside jog offset option, the thickness factor has to be greater than one. */
+    SHEET_METAL_JOG_THICKNESS_OUTSIDE,
+    /* Adjust or switch direction of offset distance. */
+    SHEET_METAL_JOG_UP_TO_ENTITY,
+    /* Failed to create jog transition area. */
+    SHEET_METAL_JOG_STRETCH_CLIPPED,
+    /* Updating bend angle in order to accommodate the specified jog offset. */
+    SHEET_METAL_JOG_BEND_ANGLE_UPDATED,
+    /* Tag standard content feature cannot be patterned. */
+    CUSTOM_STANDARD_CONTENT_TAG_NO_FEATURE_PATTERN,
+    /* Standard content must be tagged with one part. */
+    CUSTOM_STANDARD_CONTENT_TAG_SELECT_SOMETHING,
+    /* There are bodies already tagged for standard content in this Part Studio. */
+    CUSTOM_STANDARD_CONTENT_TAG_BODIES_ALREADY_TAGGED,
+    /* Standard content part must be a solid or a composite part. */
+    CUSTOM_STANDARD_CONTENT_TAG_PART_NOT_SOLID,
+    SIMULATION_RIGID_INSTANCE_MATERIAL_PROPERTY_OUTSIDE_REQUIRED_BOUNDS,
+    /* Select at least one constraint. */
+    SIMULATION_BOUNDARY_CONDITION_ALL_CONSTRAINTS_DISABLED,
+    /* Modifying K Factor is not supported for flex PCB models. */
+    PCB_K_FACTOR_NOT_SUPPORTED,
+    /* Rolled hems are not supported for flex PCB models. */
+    SHEET_METAL_HEM_ROLLED_NOT_SUPPORTED_FOR_PCB,
+    /* Holes are not supported for flex PCB models. */
+    HOLE_NOT_SUPPORTED_FOR_PCB,
+    /* Flex PCB models support only planar walls. */
+    PCB_NON_PLANAR_WALL_NOT_SUPPORTED,
+    /* Can not lock a rigid assembly */
+    ASSEMBLY_NAMED_POSITIONS_LOCK_RIGID,
+    /* Can not unlock an assembly that is not locked to a position */
+    ASSEMBLY_NAMED_POSITIONS_UNLOCKING_UNLOCKED,
+    /* Computed k-Factor is out of valid range. */
+    SHEET_METAL_JOINT_K_FACTOR,
+    /* Jog could not be created with the bend angle direction and target entity selection. */
+    SHEET_METAL_JOG_OPPOSITE_DIRECTION
 }
 
