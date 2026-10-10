@@ -43,6 +43,7 @@ export enum ConstraintType
     RHO,
     EQUAL_CURVATURE,
     BEZIER_DEGREE,
-    FREEZE
+    FREEZE,
+    EQUAL_CURVATURE_G3
 }
 
