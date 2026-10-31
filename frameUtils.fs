@@ -3,16 +3,16 @@ FeatureScript ; /* Automatically generated version */
 // See the LICENSE tab for the license text.
 // Copyright (c) 2013-Present PTC Inc.
 
-import(path : "onshape/std/containers.fs",version : "3095.0");
-import(path : "onshape/std/context.fs",version : "3095.0");
-import(path : "onshape/std/coordSystem.fs",version : "3095.0");
-import(path : "onshape/std/evaluate.fs",version : "3095.0");
-import(path : "onshape/std/feature.fs",version : "3095.0");
-import(path : "onshape/std/frameAttributes.fs",version : "3095.0");
-import(path : "onshape/std/query.fs",version : "3095.0");
-import(path : "onshape/std/units.fs",version : "3095.0");
-import(path : "onshape/std/valueBounds.fs",version : "3095.0");
-import(path : "onshape/std/vector.fs",version : "3095.0");
+import(path : "onshape/std/containers.fs",version : "3112.0");
+import(path : "onshape/std/context.fs",version : "3112.0");
+import(path : "onshape/std/coordSystem.fs",version : "3112.0");
+import(path : "onshape/std/evaluate.fs",version : "3112.0");
+import(path : "onshape/std/feature.fs",version : "3112.0");
+import(path : "onshape/std/frameAttributes.fs",version : "3112.0");
+import(path : "onshape/std/query.fs",version : "3112.0");
+import(path : "onshape/std/units.fs",version : "3112.0");
+import(path : "onshape/std/valueBounds.fs",version : "3112.0");
+import(path : "onshape/std/vector.fs",version : "3112.0");
 
 /** @internal */
 export enum FrameCornerType
