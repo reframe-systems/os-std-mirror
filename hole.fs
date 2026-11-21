@@ -1850,6 +1850,14 @@ function displayToolErrorEntities(context is Context, topLevelId is Id, definiti
 {
     const errorId = topLevelId + "errorEntities";
 
+    // Preserve axes adjusted for "Start from selected plane" before changing startStyle to SKETCH below.
+    // The error tool uses AXIS_POINT profiles, so the axis origin needs to already be located on the selected start plane.
+    var errorAxes = undefined;
+    if (definition.startStyle == HoleStartStyle.PLANE)
+    {
+        errorAxes = try silent(computeAxes(context, locations, definition.oppositeDirection, definition.transform, definition.startBoundEntity));
+    }
+
     if (definition.endStyle != HoleEndStyle.BLIND || definition.hasClearance)
     {
         const userStyle = definition.endStyle;
@@ -1877,15 +1885,22 @@ function displayToolErrorEntities(context is Context, topLevelId is Id, definiti
     definition.scope = qNothing();
     definition.hasClearance = false;
 
+    var opHoleOverrides = {
+            // Do not attempt any subtraction and keep the tools for error display
+            "subtractFromTargets" : false,
+            "keepTools" : true
+        };
+
+    if (errorAxes != undefined)
+    {
+        opHoleOverrides.axes = errorAxes;
+    }
+
     startFeature(context, errorId);
     try
     {
         // Pass `errorId` as the topLevelId so that we do not process any statuses onto the real topLevelId
-        buildOpHoleDefinitionAndCallOpHole(context, errorId, errorId + "opHole", definition, locations, {
-                    // Do not attempt any subtraction and keep the tools for error display
-                    "subtractFromTargets" : false,
-                    "keepTools" : true
-                });
+        buildOpHoleDefinitionAndCallOpHole(context, errorId, errorId + "opHole", definition, locations, opHoleOverrides);
         const errorBodyQuery = qCreatedBy(errorId, EntityType.BODY);
         setErrorEntities(context, topLevelId, { "entities" : errorBodyQuery });
     }

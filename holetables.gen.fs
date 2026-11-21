@@ -8310,12 +8310,12 @@ export const ANSI_V2TappedHoleTable = {
                     "displayName" : "Fastener fit",
                     "default" : "None",
                     "entries" : {
-                        "None" : {"tapDrillDiameter" : "0.7812 in", "holeDiameter" : "0.7812 in", "cBoreDiameter" : "1.375 in", "cBoreDepth" : "0.875 in", "cSinkDiameter" : "1.688 in", "cSinkAngle" : "82 degree", "majorDiameter" : "0.8750 in" },
-                        "Close" : {"tapDrillDiameter" : "0.7812 in", "holeDiameter" : "0.8906 in", "cBoreDiameter" : "1.375 in", "cBoreDepth" : "0.875 in", "cSinkDiameter" : "1.688 in", "cSinkAngle" : "82 degree", "majorDiameter" : "0.8750 in" },
-                        "Free" : {"tapDrillDiameter" : "0.7812 in", "holeDiameter" : "0.9062 in", "cBoreDiameter" : "1.375 in", "cBoreDepth" : "0.875 in", "cSinkDiameter" : "1.688 in", "cSinkAngle" : "82 degree", "majorDiameter" : "0.8750 in" },
-                        "Close (ASME)" : {"tapDrillDiameter" : "0.7812 in", "holeDiameter" : "0.906 in", "cBoreDiameter" : "1.375 in", "cBoreDepth" : "0.875 in", "cSinkDiameter" : "1.688 in", "cSinkAngle" : "82 degree", "majorDiameter" : "0.8750 in" },
-                        "Normal (ASME)" : {"tapDrillDiameter" : "0.7812 in", "holeDiameter" : "0.938 in", "cBoreDiameter" : "1.375 in", "cBoreDepth" : "0.875 in", "cSinkDiameter" : "1.688 in", "cSinkAngle" : "82 degree", "majorDiameter" : "0.8750 in" },
-                        "Loose (ASME)" : {"tapDrillDiameter" : "0.7812 in", "holeDiameter" : "1.031 in", "cBoreDiameter" : "1.375 in", "cBoreDepth" : "0.875 in", "cSinkDiameter" : "1.688 in", "cSinkAngle" : "82 degree", "majorDiameter" : "0.8750 in" }
+                        "None" : {"tapDrillDiameter" : "0.8125 in", "holeDiameter" : "0.8125 in", "cBoreDiameter" : "1.375 in", "cBoreDepth" : "0.875 in", "cSinkDiameter" : "1.688 in", "cSinkAngle" : "82 degree", "majorDiameter" : "0.8750 in" },
+                        "Close" : {"tapDrillDiameter" : "0.8125 in", "holeDiameter" : "0.8906 in", "cBoreDiameter" : "1.375 in", "cBoreDepth" : "0.875 in", "cSinkDiameter" : "1.688 in", "cSinkAngle" : "82 degree", "majorDiameter" : "0.8750 in" },
+                        "Free" : {"tapDrillDiameter" : "0.8125 in", "holeDiameter" : "0.9062 in", "cBoreDiameter" : "1.375 in", "cBoreDepth" : "0.875 in", "cSinkDiameter" : "1.688 in", "cSinkAngle" : "82 degree", "majorDiameter" : "0.8750 in" },
+                        "Close (ASME)" : {"tapDrillDiameter" : "0.8125 in", "holeDiameter" : "0.906 in", "cBoreDiameter" : "1.375 in", "cBoreDepth" : "0.875 in", "cSinkDiameter" : "1.688 in", "cSinkAngle" : "82 degree", "majorDiameter" : "0.8750 in" },
+                        "Normal (ASME)" : {"tapDrillDiameter" : "0.8125 in", "holeDiameter" : "0.938 in", "cBoreDiameter" : "1.375 in", "cBoreDepth" : "0.875 in", "cSinkDiameter" : "1.688 in", "cSinkAngle" : "82 degree", "majorDiameter" : "0.8750 in" },
+                        "Loose (ASME)" : {"tapDrillDiameter" : "0.8125 in", "holeDiameter" : "1.031 in", "cBoreDiameter" : "1.375 in", "cBoreDepth" : "0.875 in", "cSinkDiameter" : "1.688 in", "cSinkAngle" : "82 degree", "majorDiameter" : "0.8750 in" }
                     }
                 },
                 "16 tpi" : {

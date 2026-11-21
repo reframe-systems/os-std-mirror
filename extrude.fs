@@ -351,6 +351,7 @@ export const extrude = defineFeature(function(context is Context, id is Id, defi
             //Create thin wall geometry
             thinOpposingPairs = thinWallWithDraft(context, id, definition, planeNormal, draftCondition, hasTolerantThickness);
             reconstructOp = function(id){thinWallWithDraft(context, id, definition, planeNormal, draftCondition, false); };
+            registerThinWallSketchDimensions(context, originalDefinition);
         }
         else
         {

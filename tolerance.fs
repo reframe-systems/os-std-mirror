@@ -769,6 +769,25 @@ precondition
 
 /**
  * @internal
+ * Tells the annotation manager whether a thin feature is one-sided (exactly one non-zero thickness), so that tolerant sketch
+ * dimensions spanning the wall can be attached to the correct pair of faces. Independent of any tolerant feature parameters.
+ */
+export function registerThinWallSketchDimensions(context is Context, definition is map)
+{
+    if (!isAtVersionOrLater(context, FeatureScriptVersionNumber.V3131_THIN_FEATURE_SKETCH_DIMENSION_FACES))
+    {
+        return;
+    }
+    var oneSided = false;
+    if (!definition.midplane)
+    {
+        oneSided = tolerantEqualsZero(definition.thickness1) != tolerantEqualsZero(definition.thickness2);
+    }
+    setThinWallOneSided(context, oneSided);
+}
+
+/**
+ * @internal
  * A general utility for features that conform to the general format of thin feature thickness inputs, like extrude or revolve
  */
 export function registerEntitiesForThinFeature(context is Context, id is Id, definition is map, tolerantParameters is map, queryPairs is array)

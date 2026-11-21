@@ -272,6 +272,7 @@ function patternWallsForModel(context is Context, topLevelId is Id, id is Id, de
     // Assign necessary attributes for created sheets to be built out as sheet metal
     // Assign these attributes before the patterned bodies are booleaned back onto owner sheet model
     reapplyJointAttributes(context, topLevelId, smTrackingAndAttributeByType, attributeIdCounter);
+    reapplyCollapsedWallAttributes(context, topLevelId, smTrackingAndAttributeByType, attributeIdCounter);
     if (isAtVersionOrLater(context, FeatureScriptVersionNumber.V2257_REAPPLY_CUTTING_TOOL_BODY_IDS))
     {
         // Need to call reapplyWallAttributes() on the intermediate patterned wall(s) as well so that the boolean of
@@ -496,6 +497,9 @@ function createSMTrackingAndAttributeByType(context is Context, definitionTopolo
     smTrackingAndAttributeByType[SMObjectType.CORNER] =
         createSMTrackingAndAttribute(context, qEntityFilter(definitionTopology, EntityType.VERTEX), SMObjectType.CORNER);
 
+    smTrackingAndAttributeByType[SMObjectType.COLLAPSED_WALL] = !isAtVersionOrLater(context, FeatureScriptVersionNumber.V3128_PATTERN_COLLAPSED_WALLS) ? [] :
+        createSMTrackingAndAttribute(context, qEntityFilter(definitionTopology, EntityType.EDGE)->qEdgeTopologyFilter(EdgeTopology.TWO_SIDED), SMObjectType.COLLAPSED_WALL);
+
     return smTrackingAndAttributeByType;
 }
 
@@ -574,6 +578,24 @@ function reapplyWallAttributes(context is Context, topLevelId is Id, smTrackingA
 function reapplyJointAttributes(context is Context, topLevelId is Id, smTrackingAndAttributeByType is map, attributeIdCounter is box)
 {
     for (var trackingAndAttribute in smTrackingAndAttributeByType[SMObjectType.JOINT])
+    {
+        var newEdges = evaluateQuery(context, trackingAndAttribute.tracking);
+        var attribute = trackingAndAttribute.attribute;
+        for (var newEdge in newEdges)
+        {
+            attribute.attributeId = toAttributeId(topLevelId + attributeIdCounter[]);
+            attributeIdCounter[] += 1;
+            setAttribute(context, { "entities" : newEdge, "attribute" : attribute });
+        }
+    }
+}
+
+/**
+ * Reapply collapsed wall attributes to patterned sheet metal edges.
+ */
+function reapplyCollapsedWallAttributes(context is Context, topLevelId is Id, smTrackingAndAttributeByType is map, attributeIdCounter is box)
+{
+    for (var trackingAndAttribute in smTrackingAndAttributeByType[SMObjectType.COLLAPSED_WALL])
     {
         var newEdges = evaluateQuery(context, trackingAndAttribute.tracking);
         var attribute = trackingAndAttribute.attribute;

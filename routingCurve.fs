@@ -221,6 +221,12 @@ predicate pointsStepPredicate(definition is map)
         annotation { "Name" : "Selected Point", "UIHint" : [UIHint.ALWAYS_HIDDEN, UIHint.UNCONFIGURABLE] }
         isInteger(definition.pointIndex, POINT_INDEX_BOUNDS);
 
+        annotation { "Name" : "Previous", "UIHint" : UIHint.DISPLAY_SHORT }
+        isButton(definition.previousPoint);
+
+        annotation { "Name" : "Next", "UIHint" : UIHint.DISPLAY_SHORT }
+        isButton(definition.nextPoint);
+
         pointsPredicate(definition);
     }
 
@@ -864,10 +870,17 @@ function addPointsManipulator(context is Context, id is Id, points is array, ind
     }
     // We remove the position of the currently selected point because the point manipulator would interfere with the triad manipulator
     const pointsWithoutIndex = removeElementAt(points, index);
-    const pointManip = pointsManipulator({
-                "points" : pointsWithoutIndex,
-                "index" : -1
-            });
+    var pointsManipulatorDefinition = {
+            "points" : pointsWithoutIndex,
+            "index" : -1
+        };
+    if (isAtVersionOrLater(context, FeatureScriptVersionNumber.V3130_ROUTING_CURVE_POINT_OVERLAP_FEEDBACK))
+    {
+        // The selected point isn't rendered here but should still drive dot sizing.
+        pointsManipulatorDefinition.omittedPoint = points[index];
+        pointsManipulatorDefinition.highlightCloseNeighbors = true;
+    }
+    const pointManip = pointsManipulator(pointsManipulatorDefinition);
     addManipulators(context, id, { (POINT_MANIPULATOR) : pointManip });
 }
 
@@ -1767,6 +1780,14 @@ function pointStepEditLogic(context is Context, id is Id, oldDefinition is map, 
     if (mapArray(oldDefinition.points, point => point.index) != currentIndicesOrder || currentIndicesOrder != newIndicesOrder)
     {
         return processAddedOrRemovedPoints(oldDefinition, definition);
+    }
+    if (definition.pointsEditType == PointsEditType.SINGLE &&
+        (clickedButton == "previousPoint" || clickedButton == "nextPoint"))
+    {
+        const pointCount = size(definition.points);
+        const direction = clickedButton == "previousPoint" ? -1 : 1;
+        definition.pointIndex = (definition.pointIndex + direction + pointCount) % pointCount;
+        return definition;
     }
     const index = getArrayIndexOfPointWithIndex(definition.points, definition.pointIndex);
     // If we're still here, the points order hasn't changed so something else has.

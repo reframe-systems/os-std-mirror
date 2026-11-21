@@ -1189,6 +1189,15 @@ precondition
 }
 
 /**
+ * @internal
+ * Records whether a thin extrude is one-sided, see registerThinWallSketchDimensions.
+ */
+export function setThinWallOneSided(context is Context, oneSided is boolean)
+{
+    @setThinWallOneSided(context, { "oneSided" : oneSided });
+}
+
+/**
  * Call this function within the body of a feature to find all tolerant quantity parameters. See [setDimensionedEntities] for more details.
  * @param definition: @autocomplete `{}`
  * @returns : A map where the keys are the ids of tolerant quantity parameters for the current feature. The values are empty maps.

@@ -3632,6 +3632,10 @@ export enum ErrorStringEnum
     /* The composite part tagged as standard content has more than 50 constituent parts, which may impact performance. */
     CUSTOM_STANDARD_CONTENT_TAG_COMPOSITE_PART_TOO_MANY_CONSTITUENTS,
     /* Standard content part cannot be a constituent of a closed composite part. */
-    CUSTOM_STANDARD_CONTENT_TAG_PART_CONSUMED
+    CUSTOM_STANDARD_CONTENT_TAG_PART_CONSUMED,
+    /* Exclude from properties requires the assembly default configuration to reference the default configuration of all top level sub assemblies. Correct the reference in the Configuration panel. */
+    ASSEMBLY_COSMETIC_CONFIG_NOT_AT_DEFAULT,
+    /* Assembly contains an unsupported open mesh instance. */
+    FGS_SOLID_MESH_WITH_BOUNDARY_EDGES
 }
 

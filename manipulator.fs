@@ -312,6 +312,10 @@ precondition
  * @param definition {{
  *      @field points {array} : Array of 3d locations for points
  *      @field index {number} : The index of the currently selected point
+ *      @field omittedPoint {Vector} : Optional. A point that is not in `points` (e.g. the selected point drawn by
+ *              another manipulator) but should still count when sizing the dots.
+ *      @field highlightCloseNeighbors {boolean} : Optional, defaults to `false`. If `true`, points that
+ *              overlap or nearly overlap another point are drawn with a distinct style.
  * }}
  */
 export function pointsManipulator(definition is map) returns Manipulator
@@ -323,8 +327,20 @@ precondition
         is3dLengthVector(entry);
     }
     definition.index is number;
+    if (definition.omittedPoint != undefined)
+    {
+        is3dLengthVector(definition.omittedPoint);
+    }
+    if (definition.highlightCloseNeighbors != undefined)
+    {
+        definition.highlightCloseNeighbors is boolean;
+    }
 }
 {
+    if (definition.highlightCloseNeighbors == undefined)
+    {
+        definition.highlightCloseNeighbors = false;
+    }
     definition.manipulatorType = ManipulatorType.POINTS;
     return definition as Manipulator;
 }
